@@ -59,9 +59,9 @@ services:
       - mynetwork
 
   # --- FastAPI Applications ---
-  fastapi_app1:
-    image: final_project-fastapi_app:latest
-    container_name: fastapi_app1
+  flask_app1:
+    image: final_project-flask_app:latest
+    container_name: flask_app1
     environment:
       DATABASE_URL: "postgresql://root@crdb1:26257/defaultdb?sslmode=disable"
     # ports:
@@ -75,9 +75,9 @@ services:
       - mynetwork
     entrypoint: ["/bin/bash", "-c", "python main.py"]
 
-  fastapi_app2:
-    image: final_project-fastapi_app:latest
-    container_name: fastapi_app2
+  flask_app2:
+    image: final_project-flask_app:latest
+    container_name: flask_app2
     environment:
       DATABASE_URL: "postgresql://root@crdb2:26257/defaultdb?sslmode=disable" # 連到不同節點做簡單的客戶端負載均衡
     volumes:
@@ -103,8 +103,8 @@ services:
       # 如果有 SSL 憑證:
       # - ./nginx/certs:/etc/nginx/certs:ro
     depends_on:
-      - fastapi_app1
-      - fastapi_app2
+      - flask_app1
+      - flask_app2
     networks:
       - mynetwork
     # restart: unless-stopped

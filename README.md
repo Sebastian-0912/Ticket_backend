@@ -2,10 +2,10 @@
 
 ## 概述
 
-這是一個使用 FastAPI 和 CockroachDB 叢集構建的分散式系統範例專案。系統包含：
+這是一個使用 Flask 和 CockroachDB 叢集構建的分散式系統範例專案。系統包含：
 
 - 3 節點 CockroachDB 分佈式資料庫叢集
-- 2 個 FastAPI 應用程式實例 (負載均衡)
+- 2 個 Flask 應用程式實例 (負載均衡)
 - Nginx 反向代理伺服器
 
 ## 安裝與設定
@@ -19,7 +19,7 @@
 
 
 ```
-dis_deploy_example/
+Ticket_backend/
 ├── backend/
 │   ├── main.py
 │   ├── requirements.txt
@@ -36,7 +36,7 @@ dis_deploy_example/
 https://github.com/anud18/dis_deploy_example.git
 ```
 
-### 步驟二：建立 FastAPI Docker Image
+### 步驟二：建立 Flask Docker Image
 
 1. 將你的 requirements.txt 檔案放在 backend 目錄中(Optional)：
 
@@ -45,7 +45,7 @@ https://github.com/anud18/dis_deploy_example.git
 
 ```bash
 cd backend
-docker build -t final_project-fastapi_app:latest .
+docker build -t final_project-flask_app:latest .
 cd ..
 ```
 
@@ -68,7 +68,7 @@ docker compose up
 這將啟動：
 - 3 節點 CockroachDB 叢集
 - 初始化 CockroachDB 叢集的服務
-- 2 個 FastAPI 應用程式實例
+- 2 個 Flask 應用程式實例
 - Nginx 反向代理
 
 ### 檢查服務狀態
@@ -114,7 +114,7 @@ docker compose down
 docker compose logs
 
 # 查看特定服務的日誌
-docker compose logs fastapi_app1
+docker compose logs Flask_app1
 
 # 持續追蹤日誌
 docker compose logs -f
@@ -123,8 +123,8 @@ docker compose logs -f
 ### 進入容器
 
 ```bash
-# 進入 FastAPI 應用程式容器
-docker compose exec fastapi_app1 bash
+# 進入 Flask 應用程式容器
+docker compose exec Flask_app1 bash
 
 # 進入 CockroachDB 容器
 docker compose exec crdb1 bash
