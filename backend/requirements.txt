@@ -2,5 +2,6 @@ psycopg2-binary
 uvicorn[standard]
 sqlalchemy==2.0.36
 sqlalchemy-cockroachdb
+flask_sqlalchemy
 python-dotenv
 flask

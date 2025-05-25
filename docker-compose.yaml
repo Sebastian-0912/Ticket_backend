@@ -96,6 +96,7 @@ services:
       DATABASE_URL: "postgresql://root@crdb1:26257/defaultdb?sslmode=disable"
       FLASK_APP: main.py        # 👈 tells flask where to find your app
       FLASK_ENV: development    # 👈 enables debug mode + auto reload
+      FLASK_DEBUG: 1
     volumes:
       - ./backend:/app          # 👈 mount code for live editing
     depends_on:
@@ -113,6 +114,7 @@ services:
       DATABASE_URL: "postgresql://root@crdb2:26257/defaultdb?sslmode=disable"
       FLASK_APP: main.py
       FLASK_ENV: development
+      FLASK_DEBUG: 1
     volumes:
       - ./backend:/app
     depends_on:
