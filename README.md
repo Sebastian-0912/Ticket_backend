@@ -33,7 +33,7 @@ Ticket_backend/
 ### 步驟一：Git clone 專案
 
 ```bash
-https://github.com/anud18/dis_deploy_example.git
+git@github.com:Sebastian-0912/Ticket_backend.git
 ```
 
 ### 步驟二：建立 Flask Docker Image
