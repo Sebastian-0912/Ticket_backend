@@ -159,7 +159,7 @@ def delete_item(item_id):
 
 @app.route("/")
 def root():
-    return jsonify({"message": "Flask ORM App is running."})
+    return jsonify({"message": "Flask ORM App is running!!!!"})
 
 # --- 資料庫連線測試端點 ---
 @app.route("/db-test/")

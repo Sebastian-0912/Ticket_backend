@@ -58,28 +58,61 @@ services:
     networks:
       - mynetwork
 
-  # --- FastAPI Applications ---
+  # --- Flask Applications ---
+  # flask_app1:
+  #   image: final_project-flask_app:latest
+  #   container_name: flask_app1
+  #   environment:
+  #     DATABASE_URL: "postgresql://root@crdb1:26257/defaultdb?sslmode=disable"
+  #   # ports:
+  #   #   - "8001:8000"
+  #   volumes:
+  #     - ./backend:/app
+  #   depends_on:
+  #     crdb_init:
+  #       condition: service_completed_successfully
+  #   networks:
+  #     - mynetwork
+  #   entrypoint: ["/bin/bash", "-c", "python main.py"]
+
+  # flask_app2:
+  #   image: final_project-flask_app:latest
+  #   container_name: flask_app2
+  #   environment:
+  #     DATABASE_URL: "postgresql://root@crdb2:26257/defaultdb?sslmode=disable" # 連到不同節點做簡單的客戶端負載均衡
+  #   volumes:
+  #     - ./backend:/app
+  #   depends_on:
+  #     crdb_init:
+  #       condition: service_completed_successfully
+  #   networks:
+  #     - mynetwork
+  #   entrypoint: ["/bin/bash", "-c", "python main.py"]
+
   flask_app1:
     image: final_project-flask_app:latest
     container_name: flask_app1
     environment:
       DATABASE_URL: "postgresql://root@crdb1:26257/defaultdb?sslmode=disable"
-    # ports:
-    #   - "8001:8000"
+      FLASK_APP: main.py        # 👈 tells flask where to find your app
+      FLASK_ENV: development    # 👈 enables debug mode + auto reload
     volumes:
-      - ./backend:/app
+      - ./backend:/app          # 👈 mount code for live editing
     depends_on:
       crdb_init:
         condition: service_completed_successfully
     networks:
       - mynetwork
-    entrypoint: ["/bin/bash", "-c", "python main.py"]
+    entrypoint: ["/bin/bash", "-c", "flask run --host=0.0.0.0 --port=8000"]
+    # 👆 replaces python main.py to enable live reload with flask dev server
 
   flask_app2:
     image: final_project-flask_app:latest
     container_name: flask_app2
     environment:
-      DATABASE_URL: "postgresql://root@crdb2:26257/defaultdb?sslmode=disable" # 連到不同節點做簡單的客戶端負載均衡
+      DATABASE_URL: "postgresql://root@crdb2:26257/defaultdb?sslmode=disable"
+      FLASK_APP: main.py
+      FLASK_ENV: development
     volumes:
       - ./backend:/app
     depends_on:
@@ -87,8 +120,8 @@ services:
         condition: service_completed_successfully
     networks:
       - mynetwork
-    # entrypoint: ["/bin/sh", "-c", "uvicorn main:app --host 0.0.0.0 --port 8000"]
-    entrypoint: ["/bin/bash", "-c", "python main.py"]
+    entrypoint: ["/bin/bash", "-c", "flask run --host=0.0.0.0 --port=8000"]
+
 
 
   # --- Nginx Reverse Proxy ---
