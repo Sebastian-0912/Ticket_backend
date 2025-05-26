@@ -7,6 +7,13 @@
 <details>
 <summary><code>POST</code> <code><b>/</b></code> <code>(Create a new arena)</code></summary>
 
+##### Headers
+
+| key             | required | data type | description             |
+| --------------- | -------- | --------- | ----------------------- |
+| `Authorization` | true     | string    | Bearer token from login |
+
+
 ##### Body (application/json)
 
 | key        | required | data type | description         |

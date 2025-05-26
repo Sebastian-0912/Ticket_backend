@@ -174,3 +174,5 @@ def test_db_connection():
         return jsonify({"status": "success", "message": f"Database connection successful.{result}"})
     except Exception as e:
         return jsonify({"status": "error", "message": f"Database connection failed: {str(e)}"}), 500
+
+

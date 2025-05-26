@@ -22,6 +22,7 @@ Reserves a ticket for a user for a given activity. Sets ticket status to `UNPAID
 | ------------- | ---- | -------- | ------------------ |
 | `user_id`     | UUID | true     | ID of the user     |
 | `activity_id` | UUID | true     | ID of the activity |
+| `num_tickets` | int  | true     | Number of tickets  |
 
 **Responses:**
 

@@ -15,12 +15,18 @@
 
 ##### Body (application/json)
 
-| key           | required | data type | description               |
-| ------------- | -------- | --------- | ------------------------- |
-| `title`       | true     | string    | Activity title            |
-| `description` | false    | string    | Optional description      |
-| `location`    | false    | string    | Where the activity occurs |
-| `time`        | true     | string    | ISO 8601 datetime string  |
+| key            | required | data type | description          |
+| -------------- | -------- | --------- | -------------------- |
+| `title`        | true     | string    | Activity title       |
+| `content`      | true     | string    | Optional description |
+| `price`        | true     | string    | price                |
+| `on_sale_date` | true     | string    | on_sale_date         |
+| `start_time`   | true     | string    | start_time           |
+| `end_time`     | true     | string    | end_time             |
+| `cover_image`  | true     | string    | cover_image          |
+| `arena_id`     | true     | string    | arena_id             |
+| `creator_id`   | true     | string    | user_id of creator   |
+
 
 ##### Responses
 
@@ -81,12 +87,17 @@
 
 ##### Body (application/json)
 
-| key           | required | data type | description            |
-| ------------- | -------- | --------- | ---------------------- |
-| `title`       | false    | string    | Updated activity title |
-| `description` | false    | string    | Updated description    |
-| `location`    | false    | string    | Updated location       |
-| `time`        | false    | string    | Updated ISO 8601 time  |
+| key            | required | data type | description          |
+| -------------- | -------- | --------- | -------------------- |
+| `title`        | false    | string    | Activity title       |
+| `content`      | false    | string    | Optional description |
+| `price`        | false    | string    | price                |
+| `on_sale_date` | false    | string    | on_sale_date         |
+| `start_time`   | false    | string    | start_time           |
+| `end_time`     | false    | string    | end_time             |
+| `cover_image`  | false    | string    | cover_image          |
+| `arena_id`     | false    | string    | arena_id             |
+| `creator_id`   | false    | string    | user_id of creator   |
 
 ##### Responses
 

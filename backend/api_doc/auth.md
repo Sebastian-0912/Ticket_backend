@@ -56,7 +56,7 @@
 ### **Get My User Info**
 
 <details>
-<summary><code>GET</code> <code><b>/getuserinfo</b></code> <code>(Get current user's info)</code></summary>
+<summary><code>GET</code> <code><b>/get_user_info</b></code> <code>(Get current user's info)</code></summary>
 
 ##### Headers
 
@@ -79,7 +79,7 @@
 ### **Update My Info**
 
 <details>
-<summary><code>PUT</code> <code><b>/&lt;user_id&gt;</b></code> <code>(Update user info)</code></summary>
+<summary><code>PUT</code> <code><b>/</b></code> <code>(Update user info)</code></summary>
 
 ##### Headers
 
