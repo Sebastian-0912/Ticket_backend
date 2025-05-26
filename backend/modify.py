@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from schemas.ticket import TicketStatus
-from module.ticket import Ticket
+from models.ticket import Ticket
 import uuid
 
 

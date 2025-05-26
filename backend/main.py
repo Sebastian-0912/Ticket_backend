@@ -1,12 +1,12 @@
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker,Session
-from module.user import User
+from models.user import User
 from db.base_class import Base
 from schemas.ticket import TicketStatus
-from module.arena import Arena
-from module.activity import Activity
-from module.arena_taken import ArenaTaken
-from module.ticket import Ticket
+from models.arena import Arena
+from models.activity import Activity
+from models.arena_taken import ArenaTaken
+from models.ticket import Ticket
 import uuid
 from datetime import datetime
 from flask import Flask, request, jsonify, abort, g
