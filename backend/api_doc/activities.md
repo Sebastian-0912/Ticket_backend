@@ -96,8 +96,6 @@
 | `start_time`   | false    | string    | start_time           |
 | `end_time`     | false    | string    | end_time             |
 | `cover_image`  | false    | string    | cover_image          |
-| `arena_id`     | false    | string    | arena_id             |
-| `creator_id`   | false    | string    | user_id of creator   |
 
 ##### Responses
 
