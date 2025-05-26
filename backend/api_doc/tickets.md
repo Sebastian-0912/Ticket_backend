@@ -130,7 +130,7 @@ Retrieves details of a single ticket.
 
 ---
 
-### Delete a Ticket (Admin Only)
+<!-- ### Delete a Ticket (Admin Only)
 
 <details>
 <summary><code>DELETE</code> <code><b>/&lt;ticket_id&gt;</b></code></summary>
@@ -155,8 +155,34 @@ Deletes a ticket (usually soft-delete or admin only).
 
 </details>
 
----
+--- -->
 
+
+### Get All Tickets by User
+
+<details>
+<summary><code>GET</code> <code><b>/list_tickets</b></code></summary>
+
+**Description:**  
+Retrieves details of all ticket of User.
+
+
+**Headers**
+
+| key             | required | data type | description             |
+| --------------- | -------- | --------- | ----------------------- |
+| `Authorization` | true     | string    | Bearer token from login |
+
+**Responses:**
+
+| Code | Description           |
+| ---- | --------------------- |
+| 200  | Tickets details       |
+| 500  | Internal server error |
+
+</details>
+
+---
 ### Ticket Status Enum
 
 ```python
