@@ -5,7 +5,7 @@
 ### **Create Arena**
 
 <details>
-<summary><code>POST</code> <code><b>/arenas/</b></code> <code>(Create a new arena)</code></summary>
+<summary><code>POST</code> <code><b>/</b></code> <code>(Create a new arena)</code></summary>
 
 ##### Body (application/json)
 
@@ -30,7 +30,7 @@
 ### **Get All Arenas**
 
 <details>
-<summary><code>GET</code> <code><b>/arenas/</b></code> <code>(List all arenas)</code></summary>
+<summary><code>GET</code> <code><b>/</b></code> <code>(List all arenas)</code></summary>
 
 ##### Responses
 
@@ -46,7 +46,7 @@
 ### **Get Arena By ID**
 
 <details>
-<summary><code>GET</code> <code><b>/arenas/&lt;arena_id&gt;</b></code> <code>(Get a specific arena)</code></summary>
+<summary><code>GET</code> <code><b>/&lt;arena_id&gt;</b></code> <code>(Get a specific arena)</code></summary>
 
 ##### Responses
 
@@ -58,9 +58,9 @@
 
 </details>
 
----
+<!-- --- -->
 
-### **Update Arena**
+<!-- ### **Update Arena**
 
 <details>
 <summary><code>PUT</code> <code><b>/arenas/&lt;arena_id&gt;</b></code> <code>(Update arena info)</code></summary>
@@ -98,4 +98,4 @@
 | `404`     | `text/plain` | `Arena not found`       |
 | `500`     | `text/plain` | `Internal server error` |
 
-</details>
+</details> -->

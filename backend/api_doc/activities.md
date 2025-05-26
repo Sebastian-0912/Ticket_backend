@@ -5,7 +5,7 @@
 ### **Create Activity**
 
 <details>
-<summary><code>POST</code> <code><b>/activities/</b></code> <code>(Create a new activity)</code></summary>
+<summary><code>POST</code> <code><b>/</b></code> <code>(Create a new activity)</code></summary>
 
 ##### Headers
 
@@ -38,7 +38,7 @@
 ### **Get All Activities**
 
 <details>
-<summary><code>GET</code> <code><b>/activities/</b></code> <code>(List all activities)</code></summary>
+<summary><code>GET</code> <code><b>/</b></code> <code>(List all activities)</code></summary>
 
 ##### Responses
 
@@ -54,7 +54,7 @@
 ### **Get One Activity By ID**
 
 <details>
-<summary><code>GET</code> <code><b>/activities/&lt;activity_id&gt;</b></code> <code>(Retrieve an activity)</code></summary>
+<summary><code>GET</code> <code><b>/&lt;activity_id&gt;</b></code> <code>(Retrieve an activity)</code></summary>
 
 ##### Responses
 
@@ -71,7 +71,7 @@
 ### **Update Activity**
 
 <details>
-<summary><code>PUT</code> <code><b>/activities/&lt;activity_id&gt;</b></code> <code>(Update an activity)</code></summary>
+<summary><code>PUT</code> <code><b>/&lt;activity_id&gt;</b></code> <code>(Update an activity)</code></summary>
 
 ##### Headers
 
@@ -99,12 +99,12 @@
 
 </details>
 
----
+<!-- ---
 
 ### **Delete Activity**
 
 <details>
-<summary><code>DELETE</code> <code><b>/activities/&lt;activity_id&gt;</b></code> <code>(Delete an activity)</code></summary>
+<summary><code>DELETE</code> <code><b>/&lt;activity_id&gt;</b></code> <code>(Delete an activity)</code></summary>
 
 ##### Headers
 
@@ -121,4 +121,4 @@
 | `404`     | `text/plain` | `Activity not found`    |
 | `500`     | `text/plain` | `Internal server error` |
 
-</details>
+</details> -->
