@@ -174,3 +174,5 @@ cython_debug/
 .pypirc
 
 1.py
+.DB_Store
+.DS_Store

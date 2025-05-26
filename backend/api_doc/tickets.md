@@ -1,4 +1,4 @@
-# /tickets Routes
+# /tickets routes
 
 ---
 
