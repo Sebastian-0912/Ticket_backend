@@ -25,7 +25,7 @@
 | `end_time`     | true     | string    | end_time             |
 | `cover_image`  | true     | string    | cover_image          |
 | `arena_id`     | true     | string    | arena_id             |
-| `creator_id`   | true     | string    | user_id of creator   |
+<!-- | `creator_id`   | true     | string    | user_id of creator   | -->
 
 
 ##### Responses
@@ -107,6 +107,54 @@
 | `500`     | `text/plain`       | `Internal server error`                        |
 
 </details>
+
+---
+
+### **List Activity By Host**
+
+<details>
+<summary><code>GET</code> <code><b>/list_activities/host</b></code> <code>(List activities created by host)</code></summary>
+
+##### Headers
+
+| key             | required | data type | description             |
+| --------------- | -------- | --------- | ----------------------- |
+| `Authorization` | true     | string    | Bearer token from login |
+
+
+##### Responses
+
+| http code | content-type       | response                                       |
+| --------- | ------------------ | ---------------------------------------------- |
+| `200`     | `application/json` | `{"id": "uuid", "title": "...", "description": "...", ...}`    |
+| `401`     | `text/plain`       | `Unauthorized`                                 |
+| `500`     | `text/plain`       | `Internal server error`                        |
+
+</details>
+
+---
+
+### **List Activity By Client**
+
+<details>
+<summary><code>GET</code> <code><b>/list_activities/client</b></code> <code>(List activities which user participated)</code></summary>
+
+##### Headers
+
+| key             | required | data type | description             |
+| --------------- | -------- | --------- | ----------------------- |
+| `Authorization` | true     | string    | Bearer token from login |
+
+
+##### Responses
+
+| http code | content-type       | response                                       |
+| --------- | ------------------ | ---------------------------------------------- |
+| `200`     | `application/json` | `{"id": "uuid", "title": "...", "description": "...", ...}`    |
+| `500`     | `text/plain`       | `Internal server error`                        |
+
+</details>
+
 
 <!-- ---
 
