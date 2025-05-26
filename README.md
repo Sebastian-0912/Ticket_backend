@@ -13,17 +13,23 @@
 ### 前置需求
 
 - Docker 和 Docker Compose
-- Git (選用)
+- Git
 
 ### 檔案結構
 
-
-```
+```bash
 Ticket_backend/
 ├── backend/
 │   ├── main.py
-│   ├── requirements.txt
-│   └── Dockerfile
+│   ├── Dockerfile
+│   ├── models/
+│   ├── routes/
+│   ├── crud/
+│   ├── db/
+│   ├── schemas/
+│   ├── asset/
+│   ├── api_doc/
+│   └── utils/
 ├── nginx/
 │   └── nginx.conf
 ├── docker compose.yaml
@@ -36,12 +42,7 @@ Ticket_backend/
 git@github.com:Sebastian-0912/Ticket_backend.git
 ```
 
-### 步驟二：建立 Flask Docker Image
-
-1. 將你的 requirements.txt 檔案放在 backend 目錄中(Optional)：
-
-
-2. 建立後端的 API Docker image：
+### 步驟二：建立後端的 API Docker image
 
 ```bash
 cd backend
@@ -87,16 +88,9 @@ docker compose ps
 
 ### 測試 API
 
-先建立新項目：
-```bash
-curl -X POST "http://localhost:80/items/" \
-     -H "Content-Type: application/json" \
-     -d '{"name": "測試物品", "description": "這是一個測試物品"}'
-```
-
 獲取所有項目以查看是否寫入資料庫：
 ```bash
-curl -X GET "http://localhost:80/items/"
+curl -X GET "http://localhost:80/db-test/"
 ```
 
 ### 停止系統
