@@ -87,16 +87,14 @@ docker compose ps
 
 ### 測試 API
 
-先建立新項目：
+創建 table：
 ```bash
-curl -X POST "http://localhost:80/items/" \
-     -H "Content-Type: application/json" \
-     -d '{"name": "測試物品", "description": "這是一個測試物品"}'
+curl -X POST http://localhost:80/dev/create_all
 ```
 
-獲取所有項目以查看是否寫入資料庫：
+若要刪除所有 table：
 ```bash
-curl -X GET "http://localhost:80/items/"
+curl -X DELETE http://localhost:80/dev/drop_all
 ```
 
 ### 停止系統
@@ -114,7 +112,7 @@ docker compose down
 docker compose logs
 
 # 查看特定服務的日誌
-docker compose logs Flask_app1
+docker compose logs flask_app1
 
 # 持續追蹤日誌
 docker compose logs -f
@@ -124,7 +122,7 @@ docker compose logs -f
 
 ```bash
 # 進入 Flask 應用程式容器
-docker compose exec Flask_app1 bash
+docker compose exec flask_app1 bash
 
 # 進入 CockroachDB 容器
 docker compose exec crdb1 bash
@@ -138,5 +136,5 @@ docker compose exec crdb1 cockroach sql --insecure
 
 # 在 SQL shell 中檢查資料表
 SHOW TABLES;
-SELECT * FROM items;
+SELECT * FROM users;
 ```

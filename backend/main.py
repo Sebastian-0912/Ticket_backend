@@ -1,20 +1,11 @@
 from sqlalchemy import create_engine, text
-from sqlalchemy.orm import sessionmaker,Session
-from models.user import User
-from db.base_class import Base
-from schemas.ticket import TicketStatus
-from models.arena import Arena
-from models.activity import Activity
-from models.arena_taken import ArenaTaken
-from models.ticket import Ticket
-import uuid
-from datetime import datetime
 from flask import Flask, request, jsonify, abort, g
 import os
 from schemas.user import UserRole
 from db.session import SessionLocal
 from typing import cast
 from api.auth import auth_bp
+from api.dev import dev_bp
 from db.utils import get_db
 
 app = Flask(__name__)
@@ -47,5 +38,6 @@ def test_db_connection():
         return jsonify({"status": "success", "message": f"Database connection successful.{result}"})
     except Exception as e:
         return jsonify({"status": "error", "message": f"Database connection failed: {str(e)}"}), 500
-
+    
+app.register_blueprint(dev_bp)
 app.register_blueprint(auth_bp)
