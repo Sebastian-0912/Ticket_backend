@@ -5,6 +5,8 @@ from functools import wraps
 from flask import request, jsonify
 from sqlalchemy.orm import Session
 from models.user import User
+from schemas.user import UserRole
+
 
 def create_access_token(user_id, expires_delta=timedelta(hours=2)):
     payload = {
@@ -40,3 +42,12 @@ def jwt_required(db: Session):
             return f(user, *args, **kwargs)
         return wrapper
     return decorator
+
+
+def host_required(func):
+    @wraps(func)
+    def wrapper(user, *args, **kwargs):
+        if user.role != UserRole.HOST:
+            return "Forbidden: Host access required", 403
+        return func(user, *args, **kwargs)
+    return wrapper

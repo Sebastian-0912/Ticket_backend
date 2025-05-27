@@ -1,6 +1,7 @@
 from models.user import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm import Session
+from datetime import datetime, timezone
 
 def get_user_by_email(db: Session, email: str):
     return db.query(User).filter(User.email == email).first()
@@ -12,7 +13,8 @@ def create_user(db: Session, user_data: dict):
         username=user_data["username"],
         password=hashed_pw,
         role=user_data["role"],
-        phone_number=user_data["phone_number"]
+        phone_number=user_data["phone_number"],
+        create_at=datetime.now(timezone.utc),
     )
     db.add(user)
     db.commit()

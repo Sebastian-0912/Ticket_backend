@@ -1,5 +1,9 @@
 # Instruction
 
+## Schema
+![Architecture](./asset/Distributed%20system.png)
+
+
 ## 文件說明
 
 ### api_doc folder
@@ -48,17 +52,32 @@ curl -X POST http://localhost:80/dev/create_all
 curl -X DELETE http://localhost:80/dev/drop_all
 ```
 
-**Register**：
+**Register (host)**：
 
 ```bash
 curl -X POST http://localhost:80/auth/ \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "test@example.com",
+    "email": "host@example.com",
     "password": "123456",
-    "username": "testuser",
-    "role": "Host",
+    "username": "host",
+    "role": "host",
     "phone_number": "0912345678"
+}'
+
+```
+
+**Register (client)**：
+
+```bash
+curl -X POST http://localhost:80/auth/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "client@example.com",
+    "password": "123456",
+    "username": "client",
+    "role": "client",
+    "phone_number": "0912345622"
 }'
 
 ```
