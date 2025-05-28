@@ -148,3 +148,24 @@ curl http://localhost:80/arenas/
 curl http://localhost:80/arenas/<arena_id>
 
 ```
+**Create Activity**:
+
+```bash
+curl -X POST http://localhost:80/activities/ \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer [YOUR_ACCESS_TOKEN]" \
+  -d '{
+    "title": "Chou",
+    "content": "Chou",
+    "price": 1000,
+    "on_sale_date": "2025-06-01T00:00:00",
+    "start_time": "2025-06-09T17:00:00",
+    "end_time": "2025-06-09T19:00:00",
+    "cover_image": "https://example.com/image.jpg",
+    "arena_id": "[YOUR_ARENA_ID]"
+  }'
+
+```
+
+[YOUR_ACCESS_TOKEN] 要改成 login 回傳的\
+[YOUR_ARENA_ID] 要改成 Create Arena 回傳的
