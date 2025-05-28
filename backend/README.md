@@ -188,7 +188,7 @@ curl -X GET http://localhost:80/activities/[YOUR_ACTIVITY_ID]
 **Update Activity**:
 
 ```bash
-curl -X PUT http://localhost:8080/activities/[YOUR_ACTIVITY_ID] \
+curl -X PUT http://localhost:80/activities/[YOUR_ACTIVITY_ID] \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer [YOUR_ACCESS_TOKEN]" \
   -d '{
