@@ -205,3 +205,14 @@ curl -X PUT http://localhost:80/activities/[YOUR_ACTIVITY_ID] \
 ```
 [YOUR_ACCESS_TOKEN] 要改成 login 回傳的\
 [YOUR_ACTIVITY_ID] 要改成 Create Activity 回傳的
+
+
+**List activities created by host**:
+
+```bash
+curl -X GET http://localhost:80/activities/list_activities/host \
+  -H "Authorization: Bearer [YOUR_ACCESS_TOKEN]"
+
+```
+[YOUR_ACCESS_TOKEN] 要改成 login 回傳的
+
