@@ -21,7 +21,7 @@ def reserve():
     try:
         @jwt_required(db)
         def inner(user):
-            ticket = reserve_tickets(db, data["user_id"], data["activity_id"], data["num_tickets"])
+            ticket = reserve_ticket(db, data["user_id"], data["activity_id"], data["num_tickets"])
             if not ticket:
                 return "Tickets sold out or invalid data", 400
             return jsonify({
