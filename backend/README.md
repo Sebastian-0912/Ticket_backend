@@ -183,3 +183,25 @@ curl -X GET http://localhost:80/activities/
 curl -X GET http://localhost:80/activities/[YOUR_ACTIVITY_ID]
 ```
 [YOUR_ACTIVITY_ID] 要改成 Create Activity 回傳的
+
+
+**Update Activity**:
+
+```bash
+curl -X PUT http://localhost:8080/activities/[YOUR_ACTIVITY_ID] \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer [YOUR_ACCESS_TOKEN]" \
+  -d '{
+    "title": "New Event Title",
+    "content": "Updated content of the event.",
+    "price": 250,
+    "on_sale_date": "2025-06-01T10:00:00",
+    "start_time": "2025-06-15T14:00:00",
+    "end_time": "2025-06-15T18:00:00",
+    "cover_image": "https://example.com/new-cover.jpg"
+  }'
+
+
+```
+[YOUR_ACCESS_TOKEN] 要改成 login 回傳的\
+[YOUR_ACTIVITY_ID] 要改成 Create Activity 回傳的
