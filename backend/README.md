@@ -169,3 +169,17 @@ curl -X POST http://localhost:80/activities/ \
 
 [YOUR_ACCESS_TOKEN] 要改成 login 回傳的\
 [YOUR_ARENA_ID] 要改成 Create Arena 回傳的
+
+**Get All Activities**:
+
+```bash
+curl -X GET http://localhost:80/activities/
+
+```
+
+**Get Activity By ID**:
+
+```bash
+curl -X GET http://localhost:80/activities/[YOUR_ACTIVITY_ID]
+```
+[YOUR_ACTIVITY_ID] 要改成 Create Activity 回傳的
