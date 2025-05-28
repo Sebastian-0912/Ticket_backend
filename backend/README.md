@@ -88,7 +88,7 @@ curl -X POST http://localhost:80/auth/ \
 curl -X POST http://localhost:80/auth/login \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "test@example.com",
+    "email": "host@example.com",
     "password": "123456"
 }'
 
