@@ -8,7 +8,7 @@ from crud.tickets import (
     get_tickets_by_user
 )
 from utils.jwt_utils import jwt_required
-
+import traceback
 tickets_bp = Blueprint("ticket", __name__, url_prefix="/tickets")
 
 @tickets_bp.route("/reserve", methods=["POST"])
@@ -21,18 +21,24 @@ def reserve():
     try:
         @jwt_required(db)
         def inner(user):
-            ticket = reserve_ticket(db, data["user_id"], data["activity_id"], data["num_tickets"])
-            if not ticket:
+            tickets, error = reserve_ticket(db, data["user_id"], data["activity_id"], data["num_tickets"])
+            print(tickets)
+            if error or not tickets:
                 return "Tickets sold out or invalid data", 400
-            return jsonify({
-                "id": str(ticket.id),
-                "user_id": str(ticket.user_id),
-                "activity_id": str(ticket.activity_id),
-                "status": ticket.status,
-                "reserved_at": ticket.reserved_at.isoformat()
-            }), 201
+            return jsonify([
+                {
+                    "id": str(ticket.id),
+                    "user_id": str(ticket.user_id),
+                    "activity_id": str(ticket.activity_id),
+                    "status": ticket.status.value  if hasattr(ticket.status, 'value') else ticket.status,
+                    "create_at": ticket.create_at.isoformat()  # 注意欄位名
+                }
+                for ticket in tickets
+            ]), 201
         return inner()
-    except Exception:
+    except Exception as e:
+        print(traceback.format_exc())  # 印出詳細錯誤
+
         return "Internal server error", 500
 
 @tickets_bp.route("/buy", methods=["POST"])

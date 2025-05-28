@@ -25,22 +25,27 @@ def get_tickets_by_user(db: Session, user_id: uuid.UUID) -> list[Ticket]:
 def reserve_ticket(db: Session, user_id: UUID, activity_id: UUID, num_tickets: int):
     try:
         activity = db.query(Activity).filter(Activity.id == activity_id).first()
-        if not activity or activity.remaining_slots < num_tickets:
-            return None, "Tickets sold out or invalid data"
+        if not activity:
+            return None, "Invalid data"
 
-        tickets = []
-        for _ in range(num_tickets):
-            ticket = Ticket(
-                user_id=user_id,
-                activity_id=activity_id,
-                status=TicketStatus.UNPAID,
-            )
-            db.add(ticket)
-            tickets.append(ticket)
+        # sold_tickets = db.query(Ticket).filter(
+        #     Ticket.activity_id == activity_id,
+        #     Ticket.status == TicketStatus.SOLD).count()
+        unsold_tickets = db.query(Ticket).filter(
+            Ticket.activity_id == activity_id,
+            Ticket.status == TicketStatus.UNSOLD
+            ).limit(num_tickets).all()
+        
+        if len(unsold_tickets) < num_tickets:
+            return None, "Tickets sold out"
 
-        activity.remaining_slots -= num_tickets
+        for ticket in unsold_tickets:
+            ticket.user_id = user_id
+            ticket.status = TicketStatus.UNPAID
+
         db.commit()
-        return tickets, None
+        return unsold_tickets, None
+    
     except SQLAlchemyError as e:
         db.rollback()
         return None, str(e)
