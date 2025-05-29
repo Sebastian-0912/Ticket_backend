@@ -1,5 +1,9 @@
 # Instruction
 
+## Schema
+![Architecture](./asset/Distributed%20system.png)
+
+
 ## 文件說明
 
 ### api_doc folder
@@ -48,17 +52,32 @@ curl -X POST http://localhost:80/dev/create_all
 curl -X DELETE http://localhost:80/dev/drop_all
 ```
 
-**Register**：
+**Register (host)**：
 
 ```bash
 curl -X POST http://localhost:80/auth/ \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "test@example.com",
+    "email": "host@example.com",
     "password": "123456",
-    "username": "testuser",
-    "role": "Host",
+    "username": "host",
+    "role": "host",
     "phone_number": "0912345678"
+}'
+
+```
+
+**Register (client)**：
+
+```bash
+curl -X POST http://localhost:80/auth/ \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "client@example.com",
+    "password": "123456",
+    "username": "client",
+    "role": "client",
+    "phone_number": "0912345622"
 }'
 
 ```
@@ -69,7 +88,7 @@ curl -X POST http://localhost:80/auth/ \
 curl -X POST http://localhost:80/auth/login \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "test@example.com",
+    "email": "host@example.com",
     "password": "123456"
 }'
 
@@ -129,3 +148,142 @@ curl http://localhost:80/arenas/
 curl http://localhost:80/arenas/<arena_id>
 
 ```
+**Create Activity**:
+
+```bash
+curl -X POST http://localhost:80/activities/ \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer [YOUR_ACCESS_TOKEN]" \
+  -d '{
+    "title": "Chou",
+    "content": "Chou",
+    "price": 1000,
+    "on_sale_date": "2025-06-01T00:00:00",
+    "start_time": "2025-06-09T17:00:00",
+    "end_time": "2025-06-09T19:00:00",
+    "cover_image": "https://example.com/image.jpg",
+    "arena_id": "[YOUR_ARENA_ID]"
+  }'
+
+```
+
+[YOUR_ACCESS_TOKEN] 要改成 login 回傳的\
+[YOUR_ARENA_ID] 要改成 Create Arena 回傳的
+
+**Get All Activities**:
+
+```bash
+curl -X GET http://localhost:80/activities/
+
+```
+
+**Get Activity By ID**:
+
+```bash
+curl -X GET http://localhost:80/activities/[YOUR_ACTIVITY_ID]
+```
+[YOUR_ACTIVITY_ID] 要改成 Create Activity 回傳的
+
+
+**Update Activity**:
+
+```bash
+curl -X PUT http://localhost:80/activities/[YOUR_ACTIVITY_ID] \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer [YOUR_ACCESS_TOKEN]" \
+  -d '{
+    "title": "New Event Title",
+    "content": "Updated content of the event.",
+    "price": 250,
+    "on_sale_date": "2025-06-01T10:00:00",
+    "start_time": "2025-06-15T14:00:00",
+    "end_time": "2025-06-15T18:00:00",
+    "cover_image": "https://example.com/new-cover.jpg"
+  }'
+
+
+```
+[YOUR_ACCESS_TOKEN] 要改成 login 回傳的\
+[YOUR_ACTIVITY_ID] 要改成 Create Activity 回傳的
+
+
+**List activities created by host**:
+
+```bash
+curl -X GET http://localhost:80/activities/list_activities/host \
+  -H "Authorization: Bearer [YOUR_ACCESS_TOKEN]"
+
+```
+[YOUR_ACCESS_TOKEN] 要改成 login 回傳的
+
+**List activities created by Client**:
+
+```bash
+curl -X GET http://localhost:80/activities/list_activities/client \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer [YOUR_ACCESS_TOKEN]" \
+  -d '{"user_id": "[YOUR_USER_ID]"}'
+
+```
+[YOUR_ACCESS_TOKEN] 要改成 login 回傳的\
+[YOUR_USER_ID] 要改成 Register 回傳的
+
+**Reserve Tickets**:
+
+```bash
+curl -X POST http://localhost:80/tickets/reserve \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer [YOUR_ACCESS_TOKEN]" \
+  -d '{
+        "user_id": "[YOUR_USER_ID]",
+        "activity_id": "[YOUR_ACTIVITY_ID]",
+        "num_tickets": 2
+      }'
+
+```
+[YOUR_ACCESS_TOKEN] 要改成 login 回傳的\
+[YOUR_ACTIVITY_ID] 要改成 Create Activity 回傳的\
+[YOUR_USER_ID] 要改成 Register 回傳的
+
+**Buy Ticket**:
+
+```bash
+curl -X POST http://localhost:80/tickets/buy \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer [YOUR_ACCESS_TOKEN]" \
+  -d '{"ticket_id":"[YOUR_TICKET_ID]"}'
+```
+[YOUR_ACCESS_TOKEN] 要改成 login 回傳的\
+[YOUR_TICKET_ID] 要改成 Reserve Ticket 回傳的\
+
+**Refund Ticket**:
+
+```bash
+curl -X POST http://localhost:80/tickets/refund \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer [YOUR_ACCESS_TOKEN]" \
+  -d '{"ticket_id": "[YOUR_TICKET_ID]"}'
+```
+[YOUR_ACCESS_TOKEN] 要改成 login 回傳的\
+[YOUR_TICKET_ID] 要改成 Reserve Ticket 回傳的\
+
+**Get Ticket By ID**:
+
+```bash
+curl -X GET http://localhost:80/tickets/[YOUR_TICKET_ID] \
+  -H "Authorization: Bearer [YOUR_ACCESS_TOKEN]"
+```
+[YOUR_ACCESS_TOKEN] 要改成 login 回傳的\
+[YOUR_TICKET_ID] 要改成 Reserve Ticket 回傳的\
+
+**List Tickets By User_id**:
+
+```bash
+curl -X GET http://localhost:80/tickets/list_tickets \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer [YOUR_ACCESS_TOKEN]" \
+  -d '{"user_id": "[YOUR_USER_ID]"}'
+
+```
+[YOUR_ACCESS_TOKEN] 要改成 login 回傳的\
+[YOUR_USER_ID] 要改成 Register 回傳的

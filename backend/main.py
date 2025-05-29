@@ -7,6 +7,8 @@ from typing import cast
 from api.auth import auth_bp
 from api.dev import dev_bp
 from api.arenas import arena_bp
+from api.activities import activities_bp
+from api.tickets import tickets_bp
 from db.utils import get_db
 
 app = Flask(__name__)
@@ -43,3 +45,5 @@ def test_db_connection():
 app.register_blueprint(dev_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(arena_bp)
+app.register_blueprint(activities_bp)
+app.register_blueprint(tickets_bp)

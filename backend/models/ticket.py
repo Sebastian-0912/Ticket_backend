@@ -12,7 +12,7 @@ class Ticket(Base):
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
     create_at = Column(DateTime, default=datetime.utcnow)
     activity_id = Column(UUID(as_uuid=True), ForeignKey("activities.id"), nullable=False)
-    seat_number = Column(String, unique=True)
+    seat_number = Column(String, unique=False)
     status = Column(String, Enum(TicketStatus),nullable=False)
     is_finish = Column(Boolean)
     
