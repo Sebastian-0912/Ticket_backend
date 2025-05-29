@@ -220,11 +220,13 @@ curl -X GET http://localhost:80/activities/list_activities/host \
 
 ```bash
 curl -X GET http://localhost:80/activities/list_activities/client \
-  -H "Authorization: Bearer [YOUR_ACCESS_TOKEN]"
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer [YOUR_ACCESS_TOKEN]" \
+  -d '{"user_id": "[YOUR_USER_ID]"}'
 
 ```
-[YOUR_ACCESS_TOKEN] 要改成 login 回傳的
-
+[YOUR_ACCESS_TOKEN] 要改成 login 回傳的\
+[YOUR_USER_ID] 要改成 Register 回傳的
 
 **Reserve Tickets**:
 
