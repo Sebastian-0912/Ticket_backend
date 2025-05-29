@@ -120,17 +120,17 @@ def list_by_user():
     try:
         @jwt_required(db)
         def inner(user):
-            tickets = get_tickets_by_user(db, user.id)
+            tickets, _ = get_tickets_by_user(db, user.id)
             return jsonify([
                 {
-                    "id": str(t.id),
-                    "activity_id": str(t.activity_id),
-                    "status": t.status,
-                    "reserved_at": t.reserved_at.isoformat() if t.reserved_at else None,
-                    "bought_at": t.bought_at.isoformat() if t.bought_at else None,
-                    "refunded_at": t.refunded_at.isoformat() if t.refunded_at else None
-                } for t in tickets
-            ]), 200
+                    "id": str(ticket.id),
+                    "user_id": str(ticket.user_id),
+                    "activity_id": str(ticket.activity_id),
+                    "status": ticket.status,
+                    "seat_number": ticket.seat_number,
+                    "create_at": ticket.create_at.isoformat() if ticket.create_at else None
+                } for ticket in tickets
+                ]), 200
         return inner()
     except Exception:
         return "Internal server error", 500

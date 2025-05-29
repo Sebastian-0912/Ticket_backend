@@ -78,6 +78,7 @@ def refund_ticket(db: Session, ticket_id: UUID):
             return None, "Ticket already used or cannot refund"
 
         ticket.status = TicketStatus.UNSOLD
+        ticket.user_id = None
         # activity = db.query(Activity).filter(Activity.id == ticket.activity_id).first()
         # if activity:
         #     activity.remaining_slots += 1
