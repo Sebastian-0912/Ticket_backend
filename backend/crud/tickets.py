@@ -91,7 +91,7 @@ def refund_ticket(db: Session, ticket_id: UUID):
 def get_ticket_by_id(db: Session, ticket_id: UUID):
     try:
         ticket = db.query(Ticket).filter(Ticket.id == ticket_id).first()
-        return ticket, None if ticket else (None, "Ticket not found")
+        return ticket if ticket else (None, "Ticket not found")
     except SQLAlchemyError as e:
         return None, str(e)
 

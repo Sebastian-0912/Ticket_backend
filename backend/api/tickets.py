@@ -106,12 +106,12 @@ def get_by_id(ticket_id):
                 "user_id": str(ticket.user_id),
                 "activity_id": str(ticket.activity_id),
                 "status": ticket.status,
-                "reserved_at": ticket.reserved_at.isoformat() if ticket.reserved_at else None,
-                "bought_at": ticket.bought_at.isoformat() if ticket.bought_at else None,
-                "refunded_at": ticket.refunded_at.isoformat() if ticket.refunded_at else None
+                "seat_number": ticket.seat_number,
+                "create_at": ticket.create_at.isoformat() if ticket.create_at else None
             }), 200
         return inner()
     except Exception:
+        traceback.print_exc()  # 印出詳細錯誤堆疊
         return "Internal server error", 500
 
 @tickets_bp.route("/list_tickets", methods=["GET"])
