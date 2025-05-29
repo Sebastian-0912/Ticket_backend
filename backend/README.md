@@ -243,4 +243,14 @@ curl -X POST http://localhost:80/tickets/reserve \
 [YOUR_ACTIVITY_ID] 要改成 Create Activity 回傳的\
 [YOUR_USER_ID] 要改成 Register 回傳的
 
+**Buy Ticket**:
+
+```bash
+curl -X POST http://localhost:80/tickets/buy \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer [YOUR_ACCESS_TOKEN]" \
+  -d '{"ticket_id":"[YOUR_TICKET_ID]"}'
+```
+[YOUR_ACCESS_TOKEN] 要改成 login 回傳的\
+[YOUR_TICKET_ID] 要改成 Reserve Ticket 回傳的\
 

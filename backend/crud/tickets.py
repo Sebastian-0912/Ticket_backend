@@ -55,15 +55,17 @@ def buy_ticket(db: Session, ticket_id: UUID):
     try:
         ticket = db.query(Ticket).filter(Ticket.id == ticket_id).first()
         if not ticket:
-            return None, "Ticket not found"
+            return None
         if ticket.status != TicketStatus.UNPAID:
-            return None, "Ticket not in unpaid state"
+            print(ticket.status)
+            return "invalid_state"
 
         ticket.status = TicketStatus.SOLD
         db.commit()
-        return ticket, None
+        return ticket
     except SQLAlchemyError as e:
         db.rollback()
+        print(e)
         return None, str(e)
 
 
