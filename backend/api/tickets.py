@@ -77,18 +77,19 @@ def refund():
     try:
         @jwt_required(db)
         def inner(user):
-            result = refund_ticket(db, data["ticket_id"])
-            if result is None:
+            result, error_txt = refund_ticket(db, data["ticket_id"])
+            if error_txt == "Ticket not found":
                 return "Ticket not found", 404
-            if result == "invalid_state":
+            if error_txt == "Ticket already used or cannot refund":
                 return "Ticket already used or cannot refund", 400
+            
             return jsonify({
                 "id": str(result.id),
-                "status": result.status,
-                "refunded_at": result.refunded_at.isoformat()
+                "status": result.status
             }), 200
         return inner()
     except Exception:
+        traceback.print_exc()  # 印出詳細錯誤堆疊
         return "Internal server error", 500
 
 @tickets_bp.route("/<ticket_id>", methods=["GET"])
