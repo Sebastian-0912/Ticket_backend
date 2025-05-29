@@ -274,3 +274,14 @@ curl -X GET http://localhost:80/tickets/[YOUR_TICKET_ID] \
 [YOUR_ACCESS_TOKEN] 要改成 login 回傳的\
 [YOUR_TICKET_ID] 要改成 Reserve Ticket 回傳的\
 
+**List Tickets By User_id**:
+
+```bash
+curl -X GET http://localhost:80/tickets/list_tickets \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer [YOUR_ACCESS_TOKEN]" \
+  -d '{"user_id": "[YOUR_USER_ID]"}'
+
+```
+[YOUR_ACCESS_TOKEN] 要改成 login 回傳的\
+[YOUR_USER_ID] 要改成 Register 回傳的
