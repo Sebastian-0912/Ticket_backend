@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from sqlalchemy.orm import Session
 from datetime import datetime
 import uuid
+import traceback
 
 from utils.jwt_utils import jwt_required, host_required
 from db.utils import get_db
@@ -194,7 +195,8 @@ def list_activities_client():
         def inner(user):
             from crud.tickets import get_tickets_by_user
 
-            tickets = get_tickets_by_user(db, user.id)
+            tickets, _ = get_tickets_by_user(db, user.id)
+            print(tickets)
             activity_ids = {t.activity_id for t in tickets}
             activities = [get_activity_by_id(db, aid) for aid in activity_ids if aid]
             activities = [act for act in activities if act]
@@ -203,4 +205,5 @@ def list_activities_client():
 
         return inner()
     except Exception:
+        traceback.print_exc()  # 印出詳細錯誤堆疊
         return "Internal server error", 500
