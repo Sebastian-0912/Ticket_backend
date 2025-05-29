@@ -243,3 +243,4 @@ curl -X POST http://localhost:80/tickets/reserve \
 [YOUR_ACTIVITY_ID] 要改成 Create Activity 回傳的\
 [YOUR_USER_ID] 要改成 Register 回傳的
 
+
