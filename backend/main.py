@@ -10,10 +10,12 @@ from api.arenas import arena_bp
 from api.activities import activities_bp
 from api.tickets import tickets_bp
 from db.utils import get_db
+from flask_cors import CORS
 
 app = Flask(__name__)
 app.config["JSONIFY_PRETTYPRINT_REGULAR"] = True
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "secret")
+CORS(app, supports_credentials=True, origins="*")
 
 # This runs before each request
 @app.before_request
