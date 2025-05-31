@@ -136,10 +136,6 @@ services:
     ports:
       - "80:80" # HTTP
       # - "443:443" # HTTPS (需要額外設定 SSL 憑證)
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      # 如果有 SSL 憑證:
-      # - ./nginx/certs:/etc/nginx/certs:ro
     depends_on:
       - flask_app1
       - flask_app2
@@ -198,6 +194,30 @@ services:
       - prometheus
     networks:
       - mynetwork
+
+  # Auto-scaler service
+  autoscaler:
+    build:
+      context: ./autoscaler
+      dockerfile: Dockerfile
+    container_name: autoscaler
+    environment:
+      - PROMETHEUS_URL=http://prometheus:9090
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - MAX_INSTANCES=5
+      - MIN_INSTANCES=2
+      - SCALE_UP_THRESHOLD=100  # requests per minute
+      - SCALE_DOWN_THRESHOLD=20 # requests per minute
+      - CHECK_INTERVAL=30       # seconds
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./autoscaler:/app
+    depends_on:
+      - prometheus
+      - nginx
+    networks:
+      - mynetwork
+
 
 volumes:
   crdb1_data:
