@@ -34,7 +34,8 @@ def reserve_ticket(db: Session, user_id: UUID, activity_id: UUID, num_tickets: i
         unsold_tickets = db.query(Ticket).filter(
             Ticket.activity_id == activity_id,
             Ticket.status == TicketStatus.UNSOLD
-            ).limit(num_tickets).all()
+            ).with_for_update(skip_locked=True).limit(num_tickets).all()
+
         
         if len(unsold_tickets) < num_tickets:
             return None, "Tickets sold out"
