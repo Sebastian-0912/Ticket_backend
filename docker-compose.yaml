@@ -128,7 +128,10 @@ services:
 
   # --- Nginx Reverse Proxy ---
   nginx:
-    image: nginx:alpine
+    image: nginx_proxy:latest
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
     container_name: nginx_proxy
     ports:
       - "80:80" # HTTP
