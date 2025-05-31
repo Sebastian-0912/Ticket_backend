@@ -2,61 +2,61 @@ version: '3.8'
 
 services:
   # --- CockroachDB Cluster ---
-  crdb1:
-    image: cockroachdb/cockroach:latest-v24.3
-    container_name: crdb1
-    command: start --insecure --advertise-addr=crdb1 --join=crdb1,crdb2,crdb3 --cache=.25 --max-sql-memory=.25
-    ports:
-      - "26257:26257" # SQL port for crdb1
-      - "8080:8080"   # Admin UI for crdb1
-    volumes:
-      - crdb1_data:/cockroach/cockroach-data
-    networks:
-      - mynetwork
+  # crdb1:
+  #   image: cockroachdb/cockroach:latest-v24.3
+  #   container_name: crdb1
+  #   command: start --insecure --advertise-addr=crdb1 --join=crdb1,crdb2,crdb3 --cache=.25 --max-sql-memory=.25
+  #   ports:
+  #     - "26257:26257" # SQL port for crdb1
+  #     - "8080:8080"   # Admin UI for crdb1
+  #   volumes:
+  #     - crdb1_data:/cockroach/cockroach-data
+  #   networks:
+  #     - mynetwork
 
-  crdb2:
-    image: cockroachdb/cockroach:latest-v24.3
-    container_name: crdb2
-    command: start --insecure --advertise-addr=crdb2 --join=crdb1,crdb2,crdb3 --cache=.25 --max-sql-memory=.25
-    # 不直接暴露 ports 給 host，除非有特定需求
-    # ports:
-    #   - "26258:26257"
-    #   - "8081:8080"
-    volumes:
-      - crdb2_data:/cockroach/cockroach-data
-    depends_on:
-      - crdb1
-    networks:
-      - mynetwork
+  # crdb2:
+  #   image: cockroachdb/cockroach:latest-v24.3
+  #   container_name: crdb2
+  #   command: start --insecure --advertise-addr=crdb2 --join=crdb1,crdb2,crdb3 --cache=.25 --max-sql-memory=.25
+  #   # 不直接暴露 ports 給 host，除非有特定需求
+  #   # ports:
+  #   #   - "26258:26257"
+  #   #   - "8081:8080"
+  #   volumes:
+  #     - crdb2_data:/cockroach/cockroach-data
+  #   depends_on:
+  #     - crdb1
+  #   networks:
+  #     - mynetwork
 
-  crdb3:
-    image: cockroachdb/cockroach:latest-v24.3
-    container_name: crdb3
-    command: start --insecure --advertise-addr=crdb3 --join=crdb1,crdb2,crdb3 --cache=.25 --max-sql-memory=.25
-    # 不直接暴露 ports 給 host，除非有特定需求
-    # ports:
-    #   - "26259:26257"
-    #   - "8082:8080"
-    volumes:
-      - crdb3_data:/cockroach/cockroach-data
-    depends_on:
-      - crdb1
-    networks:
-      - mynetwork
+  # crdb3:
+  #   image: cockroachdb/cockroach:latest-v24.3
+  #   container_name: crdb3
+  #   command: start --insecure --advertise-addr=crdb3 --join=crdb1,crdb2,crdb3 --cache=.25 --max-sql-memory=.25
+  #   # 不直接暴露 ports 給 host，除非有特定需求
+  #   # ports:
+  #   #   - "26259:26257"
+  #   #   - "8082:8080"
+  #   volumes:
+  #     - crdb3_data:/cockroach/cockroach-data
+  #   depends_on:
+  #     - crdb1
+  #   networks:
+  #     - mynetwork
 
-  # Helper service to initialize the CockroachDB cluster
-  # This only runs once.
-  crdb_init:
-    image: cockroachdb/cockroach:latest-v24.3
-    container_name: crdb_init
-    entrypoint: ["/bin/sh", "-c", "cockroach init --insecure --host=crdb1:26257 || exit 0"]
+  # # Helper service to initialize the CockroachDB cluster
+  # # This only runs once.
+  # crdb_init:
+  #   image: cockroachdb/cockroach:latest-v24.3
+  #   container_name: crdb_init
+  #   entrypoint: ["/bin/sh", "-c", "cockroach init --insecure --host=crdb1:26257 || exit 0"]
 
-    depends_on:
-      - crdb1
-      - crdb2
-      - crdb3
-    networks:
-      - mynetwork
+  #   depends_on:
+  #     - crdb1
+  #     - crdb2
+  #     - crdb3
+  #   networks:
+  #     - mynetwork
 
   # --- Flask Applications ---
   # flask_app1:
@@ -93,15 +93,15 @@ services:
     image: final_project-flask_app:latest
     container_name: flask_app1
     environment:
-      DATABASE_URL: "postgresql://root@crdb1:26257/defaultdb?sslmode=disable"
+      DATABASE_URL: "cockroachdb+psycopg2://root@host.docker.internal:26257/defaultdb?sslmode=disable"
       FLASK_APP: main.py        # 👈 tells flask where to find your app
       FLASK_ENV: development    # 👈 enables debug mode + auto reload
       FLASK_DEBUG: 1
     volumes:
       - ./backend:/app          # 👈 mount code for live editing
-    depends_on:
-      crdb_init:
-        condition: service_completed_successfully
+    # depends_on:
+    #   crdb_init:
+    #     condition: service_completed_successfully
     networks:
       - mynetwork
     entrypoint: ["/bin/bash", "-c", "flask run --host=0.0.0.0 --port=8000"]
@@ -111,15 +111,15 @@ services:
     image: final_project-flask_app:latest
     container_name: flask_app2
     environment:
-      DATABASE_URL: "postgresql://root@crdb2:26257/defaultdb?sslmode=disable"
+      DATABASE_URL: "cockroachdb+psycopg2://root@host.docker.internal:26257/defaultdb?sslmode=disable"
       FLASK_APP: main.py
       FLASK_ENV: development
       FLASK_DEBUG: 1
     volumes:
       - ./backend:/app
-    depends_on:
-      crdb_init:
-        condition: service_completed_successfully
+    # depends_on:
+    #   crdb_init:
+    #     condition: service_completed_successfully
     networks:
       - mynetwork
     entrypoint: ["/bin/bash", "-c", "flask run --host=0.0.0.0 --port=8000"]
@@ -144,11 +144,13 @@ services:
       - mynetwork
     # restart: unless-stopped
 
-volumes:
-  crdb1_data:
-  crdb2_data:
-  crdb3_data:
+
 
 networks:
   mynetwork:
     driver: bridge
+
+# volumes:
+#   crdb1_data:
+#   crdb2_data:
+#   crdb3_data:

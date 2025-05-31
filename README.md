@@ -1,141 +1,144 @@
-# 專案說明文件
 
-## 概述
+## 架構說明
 
-這是一個使用 Flask 和 CockroachDB 叢集構建的分散式系統範例專案。系統包含：
+Mac (Docker Compose) → Minikube (CockroachDB on K8s) 
 
-- 3 節點 CockroachDB 分佈式資料庫叢集
-- 2 個 Flask 應用程式實例 (負載均衡)
-- Nginx 反向代理伺服器
+---
 
-## 安裝與設定
+## 安裝 Minikube + MetalLB
 
-### 前置需求
-
-- Docker 和 Docker Compose
-- Git
-
-### 檔案結構
+### 1.1 啟動 Minikube (使用 Docker Driver)
 
 ```bash
-Ticket_backend/
-├── backend/
-│   ├── main.py
-│   ├── Dockerfile
-│   ├── models/
-│   ├── routes/
-│   ├── crud/
-│   ├── db/
-│   ├── schemas/
-│   ├── asset/
-│   ├── api_doc/
-│   └── utils/
-├── nginx/
-│   └── nginx.conf
-├── docker compose.yaml
-└── README.md
-```
+minikube start --driver=docker
+````
 
-### 步驟一：Git clone 專案
+確認狀態：
 
 ```bash
-git@github.com:Sebastian-0912/Ticket_backend.git
+minikube status
+kubectl config current-context
 ```
 
-### 步驟二：建立後端的 API Docker image
+---
+
+### 1.2 安裝 MetalLB
 
 ```bash
-cd backend
-docker build -t final_project-flask_app:latest .
-cd ..
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
 ```
 
-## 啟動與使用系統
+---
 
-### 啟動系統
+### 1.3 設定 MetalLB IP Pool
 
-使用 Docker Compose 啟動整個系統：
+```bash
+kubectl apply -f metallb-config.yaml
+```
+
+---
+
+## 部署 CockroachDB 到 K8s
+
+### 2.1 CockroachDB StatefulSet + LoadBalancer Service
+
+Apply：
+
+```bash
+kubectl apply -f cockroachdb-deployment.yaml
+kubectl apply -f cockroachdb-service.yaml
+kubectl apply -f cockroachdb-hpa.yaml
+```
+
+---
+
+### 2.2 確認 CockroachDB Service
+
+```bash
+kubectl get svc cockroachdb
+```
+
+---
+
+### 2.3 開啟 Minikube Tunnel
+
+```bash
+sudo minikube tunnel
+```
+
+**⚠️ 必須保持這個 Terminal 開著，Tunnel 才會持續！**
+
+---
+
+### 2.4 初始化 CockroachDB Cluster
+
+```bash
+kubectl exec -it cockroachdb-0 -- ./cockroach init --insecure
+```
+
+如果已經初始化過，會看到：
+
+```
+ERROR: cluster has already been initialized
+```
+
+---
+
+## Docker Compose 部署 Flask + Nginx
+
+### 3.1 `docker-compose.yaml`
+
+---
+
+### 3.2 Flask db url 設定
+
+```env
+DATABASE_URL=cockroachdb+psycopg2://root@host.docker.internal:26257/defaultdb?sslmode=disable
+```
+
+---
+
+### 3.3 Nginx 設定 `nginx.conf`
+
+---
+
+### 3.4 啟動 Docker Compose
 
 ```bash
 docker compose up -d
 ```
 
-如果是第一次啟動可以先不加 -d 看有沒有 error：
+---
 
-```bash 
-docker compose up
-``` 
+## 測試
 
-這將啟動：
-- 3 節點 CockroachDB 叢集
-- 初始化 CockroachDB 叢集的服務
-- 2 個 Flask 應用程式實例
-- Nginx 反向代理
+### 4.1 測試 CockroachDB Admin UI
 
-### 檢查服務狀態
-
-檢查所有容器是否正確運行：
+將 CockroachDB Service Port 轉發到本地：
 
 ```bash
-docker compose ps
+kubectl port-forward svc/cockroachdb 8088:8080
 ```
 
-### 存取應用程式
+打開訪問：
 
-- API 服務: http://localhost:80 (通過 Nginx)
-- API 文檔: http://localhost:80/docs
-- CockroachDB 管理介面: http://localhost:8080 或 http://localhost:80/cdbadmin/
+```
+http://localhost:8088
+```
 
-### 測試 API
+---
 
-創建 table：
+### 4.2 測試 Flask API
+
+用 curl 測試：
+
 ```bash
 curl -X POST http://localhost:80/dev/create_all
 ```
-
-若要刪除所有 table：
-```bash
-curl -X DELETE http://localhost:80/dev/drop_all
-```
-
-### 停止系統
-
+如果失敗則
 ```bash
 docker compose down
+docker compose up -d
 ```
+---
 
-## 開發與調試
-
-### 查看日誌
-
-```bash
-# 查看所有服務的日誌
-docker compose logs
-
-# 查看特定服務的日誌
-docker compose logs flask_app1
-
-# 持續追蹤日誌
-docker compose logs -f
-```
-
-### 進入容器
-
-```bash
-# 進入 Flask 應用程式容器
-docker compose exec flask_app1 bash
-
-# 進入 CockroachDB 容器
-docker compose exec crdb1 bash
-```
-
-### 資料庫操作
-
-```bash
-# 進入 CockroachDB SQL shell
-docker compose exec crdb1 cockroach sql --insecure
-
-# 在 SQL shell 中檢查資料表
-SHOW TABLES;
-SELECT * FROM users;
-```
