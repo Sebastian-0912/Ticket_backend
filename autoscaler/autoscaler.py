@@ -417,10 +417,10 @@ http {{
                         self.last_scale_time = datetime.now()
                         logger.info("Scaled up successfully")
                 elif action == 'scale_down':
-                    logger.info("Scaling down not implemented yet")
-                    # if self.scale_down():
-                    #     self.last_scale_time = datetime.now()
-                    #     logger.info("Scaled down successfully")
+                    # logger.info("Scaling down not implemented yet")
+                    if self.scale_down():
+                        self.last_scale_time = datetime.now()
+                        logger.info("Scaled down successfully")
                 elif action == 'cooldown':
                     logger.debug("In cooldown period, skipping scaling decision")
                 
