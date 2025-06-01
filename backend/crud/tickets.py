@@ -5,7 +5,8 @@ from models.ticket import Ticket, TicketStatus
 from models.activity import Activity
 from uuid import UUID
 from sqlalchemy.exc import SQLAlchemyError
-
+from sqlalchemy import func
+# from numpy import random
 def create_tickets_for_activity(db: Session, activity_id: uuid.UUID, capacity: int) -> None:
     for seat_num in range(1, capacity + 1):
         ticket = Ticket(
@@ -34,7 +35,7 @@ def reserve_ticket(db: Session, user_id: UUID, activity_id: UUID, num_tickets: i
         unsold_tickets = db.query(Ticket).filter(
             Ticket.activity_id == activity_id,
             Ticket.status == TicketStatus.UNSOLD
-            ).with_for_update(skip_locked=True).limit(num_tickets).all()
+            ).order_by(func.random()).limit(num_tickets).all()
 
         
         if len(unsold_tickets) < num_tickets:
@@ -49,6 +50,7 @@ def reserve_ticket(db: Session, user_id: UUID, activity_id: UUID, num_tickets: i
     
     except SQLAlchemyError as e:
         db.rollback()
+        print(f"Error reserving tickets: {e}")  # 或用 logger
         return None, str(e)
 
 
