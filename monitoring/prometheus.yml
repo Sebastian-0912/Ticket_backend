@@ -1,0 +1,31 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+scrape_configs:
+  # Prometheus 自我監控
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Nginx metrics
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['nginx-exporter:9113']
+    scrape_interval: 5s
+    metrics_path: /metrics
+
+  # CockroachDB 監控 (可選)
+  - job_name: 'cockroachdb'
+    static_configs:
+      - targets: 
+        - 'crdb1:8080'
+        - 'crdb2:8080'  
+        - 'crdb3:8080'
+    metrics_path: /_status/vars
+    scrape_interval: 10s
+

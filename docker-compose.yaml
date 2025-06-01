@@ -128,27 +128,106 @@ services:
 
   # --- Nginx Reverse Proxy ---
   nginx:
-    image: nginx:alpine
+    image: nginx_proxy:latest
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
     container_name: nginx_proxy
     ports:
       - "80:80" # HTTP
       # - "443:443" # HTTPS (需要額外設定 SSL 憑證)
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      # 如果有 SSL 憑證:
-      # - ./nginx/certs:/etc/nginx/certs:ro
     depends_on:
       - flask_app1
       - flask_app2
     networks:
       - mynetwork
     # restart: unless-stopped
+  # --- Monitoring Stack ---
+  # Prometheus for metrics collection
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - mynetwork
+
+  # Nginx Prometheus Exporter
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:latest
+    container_name: nginx_exporter
+    command:
+      - '-nginx.scrape-uri=http://nginx:80/nginx_status'
+    ports:
+      - "9113:9113"
+    depends_on:
+      - nginx
+    networks:
+      - mynetwork
+
+  # Grafana for visualization
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+      - ./monitoring/grafana/dashboards/nginx-dashboard.json:/etc/grafana/provisioning/dashboards/nginx-dashboard.json:ro
+    depends_on:
+      - prometheus
+    networks:
+      - mynetwork
+
+  # Auto-scaler service
+  autoscaler:
+    build:
+      context: ./autoscaler
+      dockerfile: Dockerfile
+    container_name: autoscaler
+    environment:
+      - PROMETHEUS_URL=http://prometheus:9090
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - MAX_INSTANCES=5
+      - MIN_INSTANCES=2
+      - SCALE_UP_THRESHOLD=100  # requests per minute
+      - SCALE_DOWN_THRESHOLD=20 # requests per minute
+      - CHECK_INTERVAL=30       # seconds
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./autoscaler:/app
+    depends_on:
+      - prometheus
+      - nginx
+    networks:
+      - mynetwork
+
 
 volumes:
   crdb1_data:
   crdb2_data:
   crdb3_data:
+  prometheus_data:
+  grafana_data:
 
 networks:
   mynetwork:
+    name: mynetwork
     driver: bridge
+
