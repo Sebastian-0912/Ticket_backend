@@ -3,7 +3,7 @@ const fs = require("fs");
 
 const BASE_URL = "http://localhost:80/auth";
 const PASSWORD = "12345678";
-const COUNT = 10;
+const COUNT = 800;
 
 async function main() {
   const tokens = [];
