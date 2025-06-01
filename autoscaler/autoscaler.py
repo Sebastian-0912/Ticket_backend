@@ -435,5 +435,4 @@ http {{
 
 if __name__ == '__main__':
     scaler = AutoScaler()
-    scaler.scale_up()
     scaler.run()
