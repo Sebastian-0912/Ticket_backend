@@ -166,7 +166,8 @@ class AutoScaler:
                     'DATABASE_URL': f'postgresql://root@{crdb_node}:26257/defaultdb?sslmode=disable',
                     'FLASK_APP': 'main.py',
                     'FLASK_ENV': 'development',
-                    'FLASK_DEBUG': '1'
+                    'FLASK_DEBUG': '1',
+                    'DEBUG_METRICS': '1',
                 },
                 entrypoint=["/bin/bash", "-c", "flask run --host=0.0.0.0 --port=8000"],
                 network=f'mynetwork',

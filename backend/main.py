@@ -11,11 +11,25 @@ from api.activities import activities_bp
 from api.tickets import tickets_bp
 from db.utils import get_db
 from flask_cors import CORS
+from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
 app.config["JSONIFY_PRETTYPRINT_REGULAR"] = True
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "secret")
 CORS(app, supports_credentials=True, origins="*")
+
+# Initialize Prometheus metrics
+metrics = PrometheusMetrics(app, path='/metrics')
+
+# Create a custom metric to track Flask instances
+from prometheus_client import Gauge
+flask_instance_gauge = Gauge('flask_instances_total', 'Total number of Flask instances', ['instance_name'])
+
+# Register this instance
+instance_name = os.getenv('FLASK_INSTANCE_NAME', 'flask_app_unknown')
+flask_instance_gauge.labels(instance_name=instance_name).set(1)
+
+
 
 # This runs before each request
 @app.before_request
@@ -49,3 +63,6 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(arena_bp)
 app.register_blueprint(activities_bp)
 app.register_blueprint(tickets_bp)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8000, debug=False)

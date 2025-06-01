@@ -8,3 +8,4 @@ flask
 PyJWT
 python-dotenv
 flask-cors
+prometheus-flask-exporter

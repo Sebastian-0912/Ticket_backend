@@ -121,6 +121,67 @@
         }
       },
       {
+        "id": 10,
+        "title": "Flask Instances Count Over Time",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "count(up{job=\"flask-apps\"} == 1)",
+            "legendFormat": "Running Instances"
+          },
+          {
+            "expr": "count(up{job=\"flask-apps\"})",
+            "legendFormat": "Total Configured"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "drawStyle": "line",
+              "lineInterpolation": "stepAfter",
+              "barAlignment": 0,
+              "lineWidth": 3,
+              "fillOpacity": 20,
+              "gradientMode": "none",
+              "pointSize": 8
+            },
+            "color": {
+              "mode": "palette-classic"
+            },
+            "unit": "short",
+            "min": 0,
+            "max": 6,
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "transparent",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 1
+                },
+                {
+                  "color": "yellow",
+                  "value": 2
+                },
+                {
+                  "color": "green",
+                  "value": 3
+                }
+              ]
+            }
+          }
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 16
+        }
+      },
+      {
         "id": 4,
         "title": "Response Status Codes",
         "type": "timeseries",
@@ -154,7 +215,7 @@
           "h": 8,
           "w": 12,
           "x": 0,
-          "y": 16
+          "y": 22
         }
       },
       {
@@ -199,7 +260,7 @@
           "h": 8,
           "w": 12,
           "x": 12,
-          "y": 16
+          "y": 22
         }
       },
       {
@@ -240,7 +301,7 @@
           "h": 6,
           "w": 12,
           "x": 0,
-          "y": 24
+          "y": 30
         }
       },
       {
@@ -293,7 +354,107 @@
           "h": 6,
           "w": 12,
           "x": 12,
-          "y": 24
+          "y": 30
+        }
+      },
+      {
+        "id": 8,
+        "title": "Flask Instances Count",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "count(up{job=\"flask-apps\"} == 1)",
+            "legendFormat": "Running Instances"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "thresholds": {
+              "steps": [
+                {
+                  "color": "red",
+                  "value": null
+                },
+                {
+                  "color": "yellow", 
+                  "value": 2
+                },
+                {
+                  "color": "green",
+                  "value": 3
+                }
+              ]
+            },
+            "unit": "short",
+            "min": 0,
+            "max": 5
+          }
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 6,
+          "x": 0,
+          "y": 36
+        }
+      },
+      {
+        "id": 9,
+        "title": "Flask Instances Status",
+        "type": "table",
+        "targets": [
+          {
+            "expr": "up{job=\"flask-apps\"}",
+            "legendFormat": "",
+            "format": "table",
+            "instant": true
+          }
+        ],
+        "transformations": [
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": {
+                "__name__": true,
+                "job": true
+              },
+              "renameByName": {
+                "instance": "Flask Instance",
+                "Value": "Status"
+              }
+            }
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "align": "center",
+              "displayMode": "color-background"
+            },
+            "mappings": [
+              {
+                "options": {
+                  "0": {
+                    "text": "DOWN",
+                    "color": "red"
+                  },
+                  "1": {
+                    "text": "UP", 
+                    "color": "green"
+                  }
+                },
+                "type": "value"
+              }
+            ]
+          }
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 18,
+          "x": 6,
+          "y": 36
         }
       }
     ],
