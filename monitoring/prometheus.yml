@@ -29,3 +29,14 @@ scrape_configs:
     metrics_path: /_status/vars
     scrape_interval: 10s
 
+  # Flask 應用監控
+  - job_name: 'flask-apps'
+    static_configs:
+      - targets:
+        - 'flask_app1:8000'
+        - 'flask_app2:8000'
+        - 'flask_app3:8000'
+        - 'flask_app4:8000'
+        - 'flask_app5:8000'
+    metrics_path: /metrics
+    scrape_interval: 5s

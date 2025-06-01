@@ -97,6 +97,8 @@ services:
       FLASK_APP: main.py        # 👈 tells flask where to find your app
       FLASK_ENV: development    # 👈 enables debug mode + auto reload
       FLASK_DEBUG: 1
+      DEBUG_METRICS: 1
+      FLASK_INSTANCE_NAME: flask_app1  # 👈 instance identifier for metrics
     volumes:
       - ./backend:/app          # 👈 mount code for live editing
     depends_on:
@@ -115,6 +117,8 @@ services:
       FLASK_APP: main.py
       FLASK_ENV: development
       FLASK_DEBUG: 1
+      DEBUG_METRICS: 1
+      FLASK_INSTANCE_NAME: flask_app2  # 👈 instance identifier for metrics
     volumes:
       - ./backend:/app
     depends_on:
@@ -123,8 +127,6 @@ services:
     networks:
       - mynetwork
     entrypoint: ["/bin/bash", "-c", "flask run --host=0.0.0.0 --port=8000"]
-
-
 
   # --- Nginx Reverse Proxy ---
   nginx:
@@ -218,7 +220,6 @@ services:
     networks:
       - mynetwork
 
-
 volumes:
   crdb1_data:
   crdb2_data:
@@ -230,4 +231,3 @@ networks:
   mynetwork:
     name: mynetwork
     driver: bridge
-
